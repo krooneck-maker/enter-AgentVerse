@@ -1,65 +1,12 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Sky } from '@react-three/drei';
+import { OrbitControls, Environment, Sky } from '@react-three/drei';
 import { Agent } from '@/types/agent';
 import AgentModel from './AgentModel';
-import * as THREE from 'three';
-import { useMemo } from 'react';
 
 interface Scene3DProps {
   agents: Agent[];
   onAgentClick: (agent: Agent) => void;
 }
-
-// Custom grid component that works properly with R3F
-const CustomGrid = () => {
-  const gridLines = useMemo(() => {
-    const lines: JSX.Element[] = [];
-    const size = 50;
-    const divisions = 50;
-    const step = size / divisions;
-    const halfSize = size / 2;
-
-    for (let i = 0; i <= divisions; i++) {
-      const position = -halfSize + i * step;
-      const color = i % 5 === 0 ? '#a855f7' : '#334155';
-      const opacity = i % 5 === 0 ? 0.6 : 0.3;
-
-      // Vertical lines
-      lines.push(
-        <line key={`v-${i}`}>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              count={2}
-              array={new Float32Array([position, 0.01, -halfSize, position, 0.01, halfSize])}
-              itemSize={3}
-            />
-          </bufferGeometry>
-          <lineBasicMaterial color={color} opacity={opacity} transparent />
-        </line>
-      );
-
-      // Horizontal lines
-      lines.push(
-        <line key={`h-${i}`}>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              count={2}
-              array={new Float32Array([-halfSize, 0.01, position, halfSize, 0.01, position])}
-              itemSize={3}
-            />
-          </bufferGeometry>
-          <lineBasicMaterial color={color} opacity={opacity} transparent />
-        </line>
-      );
-    }
-
-    return lines;
-  }, []);
-
-  return <group>{gridLines}</group>;
-};
 
 const Scene3D = ({ agents, onAgentClick }: Scene3DProps) => {
   return (
@@ -75,12 +22,6 @@ const Scene3D = ({ agents, onAgentClick }: Scene3DProps) => {
         position={[10, 20, 5]}
         intensity={1.5}
         castShadow
-        shadow-mapSize={new THREE.Vector2(2048, 2048)}
-        shadow-camera-far={50}
-        shadow-camera-left={-20}
-        shadow-camera-right={20}
-        shadow-camera-top={20}
-        shadow-camera-bottom={-20}
       />
       <pointLight position={[-10, 10, -10]} intensity={0.8} color="#a855f7" />
       <pointLight position={[10, 5, 10]} intensity={0.6} color="#06b6d4" />
@@ -98,17 +39,24 @@ const Scene3D = ({ agents, onAgentClick }: Scene3DProps) => {
         />
       </mesh>
       
-      {/* Custom Grid overlay */}
-      <CustomGrid />
-      
-      {/* Contact shadows for realism */}
-      <ContactShadows
-        position={[0, 0.01, 0]}
-        opacity={0.5}
-        scale={50}
-        blur={2}
-        far={10}
-      />
+      {/* Simple grid lines */}
+      <group position={[0, 0.01, 0]}>
+        {Array.from({ length: 51 }, (_, i) => {
+          const pos = -25 + i;
+          return (
+            <group key={i}>
+              <mesh position={[pos, 0, 0]} rotation={[0, 0, 0]}>
+                <boxGeometry args={[0.02, 0.01, 50]} />
+                <meshBasicMaterial color={i % 5 === 0 ? '#a855f7' : '#334155'} opacity={i % 5 === 0 ? 0.6 : 0.3} transparent />
+              </mesh>
+              <mesh position={[0, 0, pos]} rotation={[0, 0, 0]}>
+                <boxGeometry args={[50, 0.01, 0.02]} />
+                <meshBasicMaterial color={i % 5 === 0 ? '#a855f7' : '#334155'} opacity={i % 5 === 0 ? 0.6 : 0.3} transparent />
+              </mesh>
+            </group>
+          );
+        })}
+      </group>
       
       {/* Render all agents */}
       {agents.map((agent) => (
