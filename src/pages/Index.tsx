@@ -3,6 +3,8 @@ import { Agent, Message } from '@/types/agent';
 import Scene3D from '@/components/Scene3D';
 import AgentCustomizer from '@/components/AgentCustomizer';
 import ControlPanel from '@/components/ControlPanel';
+import { Button } from '@/components/ui/button';
+import { Sparkles } from 'lucide-react';
 
 const INITIAL_AGENTS: Agent[] = [
   {
@@ -36,6 +38,7 @@ const INITIAL_AGENTS: Agent[] = [
 ];
 
 const Index = () => {
+  const [sceneActive, setSceneActive] = useState(false);
   const [agents, setAgents] = useState<Agent[]>(INITIAL_AGENTS);
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -43,13 +46,11 @@ const Index = () => {
 
   // Simulate agent interactions
   useEffect(() => {
-    if (!isRunning || agents.length === 0) return;
+    if (!isRunning || agents.length === 0 || !sceneActive) return;
 
     const interval = setInterval(() => {
-      // Randomly select an agent to "think"
       const randomAgent = agents[Math.floor(Math.random() * agents.length)];
       
-      // Simulate a message (in production, this would call an AI API)
       const simulatedMessages = [
         "I wonder what the others are thinking about...",
         "This environment is fascinating!",
@@ -72,7 +73,7 @@ const Index = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isRunning, agents]);
+  }, [isRunning, agents, sceneActive]);
 
   const handleAddAgent = () => {
     const colors = ['#a855f7', '#06b6d4', '#ec4899', '#10b981', '#f97316', '#ef4444'];
@@ -116,6 +117,33 @@ const Index = () => {
     setSelectedAgent(updatedAgent);
   };
 
+  if (!sceneActive) {
+    return (
+      <div className="w-full h-full bg-background flex items-center justify-center">
+        <div className="text-center space-y-6 max-w-2xl px-8">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-cosmic mb-4">
+            <Sparkles className="w-12 h-12 text-white" />
+          </div>
+          <h1 className="text-5xl font-bold text-foreground">
+            AI Agent Simulation
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            Create and customize AI agents in a stunning 3D environment. 
+            Watch them interact, customize their appearance, and let them explore freely.
+          </p>
+          <Button 
+            size="lg" 
+            className="mt-8 text-lg px-8 py-6"
+            onClick={() => setSceneActive(true)}
+          >
+            <Sparkles className="w-5 h-5 mr-2" />
+            Enter 3D Simulation
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full bg-background relative overflow-hidden">
       {/* 3D Scene */}
@@ -150,6 +178,20 @@ const Index = () => {
           Click agents to customize • Add agents and watch them interact
         </p>
       </div>
+
+      {/* Exit button */}
+      <Button
+        variant="outline"
+        size="sm"
+        className="absolute top-4 right-4 z-20"
+        onClick={() => {
+          setSceneActive(false);
+          setIsRunning(false);
+          setSelectedAgent(null);
+        }}
+      >
+        Exit Simulation
+      </Button>
     </div>
   );
 };

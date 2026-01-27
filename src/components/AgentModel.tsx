@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Text } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import { Agent } from '@/types/agent';
 import * as THREE from 'three';
 
@@ -87,18 +87,20 @@ const AgentModel = ({ agent, onClick }: AgentModelProps) => {
         <meshStandardMaterial color="#ffffff" emissive="#00ffff" emissiveIntensity={0.5} />
       </mesh>
       
-      {/* Name tag */}
-      <Text
-        position={[0, 2.5, 0]}
-        fontSize={0.25}
-        color="#ffffff"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.02}
-        outlineColor="#000000"
-      >
-        {agent.name}
-      </Text>
+      {/* Name tag - Using Html instead of Text */}
+      <Html position={[0, 2.5, 0]} center>
+        <div style={{
+          color: '#ffffff',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          textShadow: '0 0 4px #000000, 0 0 8px #000000',
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}>
+          {agent.name}
+        </div>
+      </Html>
       
       {/* Glow effect when hovered */}
       {hovered && (
