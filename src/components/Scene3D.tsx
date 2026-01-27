@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Sky } from '@react-three/drei';
+import { OrbitControls, Environment, ContactShadows, Sky, Grid } from '@react-three/drei';
 import { Agent } from '@/types/agent';
 import AgentModel from './AgentModel';
 
@@ -22,7 +22,8 @@ const Scene3D = ({ agents, onAgentClick }: Scene3DProps) => {
         position={[10, 20, 5]}
         intensity={1.5}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
         shadow-camera-far={50}
         shadow-camera-left={-20}
         shadow-camera-right={20}
@@ -46,7 +47,19 @@ const Scene3D = ({ agents, onAgentClick }: Scene3DProps) => {
       </mesh>
       
       {/* Grid overlay */}
-      <gridHelper args={[50, 50, '#a855f7', '#334155']} position={[0, 0.01, 0]} />
+      <Grid
+        position={[0, 0.01, 0]}
+        args={[50, 50]}
+        cellSize={1}
+        cellThickness={0.5}
+        cellColor="#a855f7"
+        sectionSize={5}
+        sectionThickness={1}
+        sectionColor="#334155"
+        fadeDistance={30}
+        fadeStrength={1}
+        infiniteGrid
+      />
       
       {/* Contact shadows for realism */}
       <ContactShadows
