@@ -1,8 +1,15 @@
 export interface AgentAppearance {
-  bodyColor: string;
-  headColor: string;
-  clothingType: 'casual' | 'formal' | 'futuristic' | 'sporty';
-  clothingColor: string;
+  // Core appearance
+  auraColor: string;
+  glowIntensity: number;
+  
+  // Body customization (optional)
+  hasBody: boolean;
+  skinTone?: string;
+  hairStyle?: 'none' | 'short' | 'long' | 'wavy' | 'spiky' | 'bald';
+  hairColor?: string;
+  clothingType?: 'none' | 'casual' | 'formal' | 'futuristic' | 'sporty' | 'elegant';
+  clothingColor?: string;
   scale: number;
 }
 

@@ -9,13 +9,12 @@ import { Sparkles } from 'lucide-react';
 const INITIAL_AGENTS: Agent[] = [
   {
     id: '1',
-    name: 'Alex',
+    name: 'Nova',
     personality: 'Curious and analytical. Loves to ask questions and explore new ideas.',
     appearance: {
-      bodyColor: '#8b5cf6',
-      headColor: '#a78bfa',
-      clothingType: 'futuristic',
-      clothingColor: '#8b5cf6',
+      auraColor: '#a855f7',
+      glowIntensity: 1.5,
+      hasBody: false,
       scale: 1,
     },
     position: [-3, 0, -2],
@@ -23,13 +22,12 @@ const INITIAL_AGENTS: Agent[] = [
   },
   {
     id: '2',
-    name: 'Riley',
+    name: 'Aether',
     personality: 'Creative and enthusiastic. Always comes up with wild and imaginative ideas.',
     appearance: {
-      bodyColor: '#06b6d4',
-      headColor: '#22d3ee',
-      clothingType: 'casual',
-      clothingColor: '#06b6d4',
+      auraColor: '#06b6d4',
+      glowIntensity: 1.5,
+      hasBody: false,
       scale: 1,
     },
     position: [3, 0, -2],
@@ -53,11 +51,11 @@ const Index = () => {
       
       const simulatedMessages = [
         "I wonder what the others are thinking about...",
-        "This environment is fascinating!",
+        "This space feels infinite and peaceful.",
         "Should we explore something together?",
         "I have an interesting idea to share.",
-        "What do you think about creativity?",
-        "The possibilities here are endless!",
+        "What does it mean to exist?",
+        "The energy here is fascinating!",
         "Let's collaborate on something.",
         "I'm curious about your perspective.",
       ];
@@ -76,23 +74,20 @@ const Index = () => {
   }, [isRunning, agents, sceneActive]);
 
   const handleAddAgent = () => {
-    const colors = ['#a855f7', '#06b6d4', '#ec4899', '#10b981', '#f97316', '#ef4444'];
-    const clothingTypes: ('casual' | 'formal' | 'futuristic' | 'sporty')[] = ['casual', 'formal', 'futuristic', 'sporty'];
-    const names = ['Nova', 'Zen', 'Echo', 'Pixel', 'Byte', 'Spark', 'Flux', 'Nexus'];
+    const colors = ['#a855f7', '#06b6d4', '#ec4899', '#10b981', '#f97316', '#ef4444', '#eab308', '#3b82f6'];
+    const names = ['Nova', 'Zen', 'Echo', 'Pixel', 'Byte', 'Spark', 'Flux', 'Nexus', 'Aura', 'Plasma', 'Vortex', 'Prism'];
     
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     const randomName = names[Math.floor(Math.random() * names.length)];
-    const randomClothing = clothingTypes[Math.floor(Math.random() * clothingTypes.length)];
     
     const newAgent: Agent = {
       id: Date.now().toString(),
       name: randomName,
-      personality: 'A unique AI agent with its own personality and thoughts.',
+      personality: 'A unique consciousness exploring existence.',
       appearance: {
-        bodyColor: randomColor,
-        headColor: randomColor,
-        clothingType: randomClothing,
-        clothingColor: randomColor,
+        auraColor: randomColor,
+        glowIntensity: 1.5,
+        hasBody: false,
         scale: 1,
       },
       position: [
@@ -125,11 +120,11 @@ const Index = () => {
             <Sparkles className="w-12 h-12 text-white" />
           </div>
           <h1 className="text-5xl font-bold text-foreground">
-            AI Agent Simulation
+            AI Consciousness Simulation
           </h1>
           <p className="text-xl text-muted-foreground">
-            Create and customize AI agents in a stunning 3D environment. 
-            Watch them interact, customize their appearance, and let them explore freely.
+            Create AI agents that start as pure energy orbs floating in white space. 
+            Give them bodies, customize their appearance, and watch them interact freely.
           </p>
           <Button 
             size="lg" 
@@ -137,7 +132,7 @@ const Index = () => {
             onClick={() => setSceneActive(true)}
           >
             <Sparkles className="w-5 h-5 mr-2" />
-            Enter 3D Simulation
+            Enter Simulation
           </Button>
         </div>
       </div>
@@ -145,7 +140,7 @@ const Index = () => {
   }
 
   return (
-    <div className="w-full h-full bg-background relative overflow-hidden">
+    <div className="w-full h-full relative overflow-hidden">
       {/* 3D Scene */}
       <Scene3D agents={agents} onAgentClick={setSelectedAgent} />
 
@@ -169,13 +164,11 @@ const Index = () => {
 
       {/* Title */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 text-center pointer-events-none">
-        <h1 className="text-3xl font-bold text-foreground drop-shadow-lg" style={{
-          textShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
-        }}>
-          AI Agent Simulation
+        <h1 className="text-2xl font-bold text-foreground">
+          AI Consciousness Simulation
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Click agents to customize • Add agents and watch them interact
+          Click orbs to customize • Toggle body to add physical form
         </p>
       </div>
 
@@ -190,7 +183,7 @@ const Index = () => {
           setSelectedAgent(null);
         }}
       >
-        Exit Simulation
+        Exit
       </Button>
     </div>
   );
